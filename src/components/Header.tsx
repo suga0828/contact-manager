@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface HeaderProps {
-  brand: string:
+  brand: string;
 }
 
 const Header = (props: HeaderProps) => {
@@ -12,6 +12,10 @@ const Header = (props: HeaderProps) => {
       <h1>{ brand }</h1>
     </div>
   )
+}
+
+Header.defaultProps = {
+  brand: 'Contact Manager'
 }
 
 export default Header;

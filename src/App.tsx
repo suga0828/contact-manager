@@ -8,7 +8,7 @@ import Header from './components/Header';
 const App = () => {
   return (
     <div className="App">
-      <Header brand="Contact Manager" />
+      <Header />
       <Contact name="John Doe" email="jdoe@mail.com" phone="555-555-5555" />
     </div>
   );
