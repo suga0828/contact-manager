@@ -2,14 +2,16 @@ import React from 'react';
 
 import './App.css';
 
-import Contact from './components/Contact';
+import Contacts from './components/Contacts';
 import Header from './components/Header';
 
 const App = () => {
   return (
     <div className="App">
       <Header />
-      <Contact name="John Doe" email="jdoe@mail.com" phone="555-555-5555" />
+      <div className="container mx-auto my-10 flex flex-col items-center">
+        <Contacts />
+      </div>
     </div>
   );
 }
