@@ -11,8 +11,8 @@ interface ContactInfo {
 }
 
 interface ContactProps {
-  info: ContactInfo
-  deleteHandler: Function;
+  info: ContactInfo;
+  deleteHandler: () => void;
 }
 
 const Contact = (props: ContactProps): JSX.Element => {

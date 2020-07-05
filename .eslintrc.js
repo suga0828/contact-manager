@@ -4,6 +4,8 @@ module.exports = {
     es6: true
   },
   extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'airbnb'
   ],
@@ -21,7 +23,8 @@ module.exports = {
   },
   plugins: [
     'react',
-    '@typescript-eslint'
+    '@typescript-eslint',
+    'import'
   ],
   rules: {
     'no-underscore-dangle': 0,
@@ -32,11 +35,18 @@ module.exports = {
     'no-console': 0,
     'no-case-declarations': 0,
     'import/prefer-default-export': 0,
-    'import/no-unresolved': [2, {commonjs: true, amd: true}],
+    'import/no-unresolved': [2, { commonjs: true, amd: true }],
     'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
-    'import/extensions': [1, 'always', { tsx: 'never' }],
+    'import/extensions': [1, 'always', { tsx: 'never', ts: 'never' }],
     'comma-dangle': ['error', 'never'],
     'arrow-parens': ['error', 'as-needed'],
-    'object-curly-newline': ['error', { "multiline": true }]
+    'object-curly-newline': ['error', { 'multiline': true }]
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.ts', '.tsx']
+      }
+    }
   }
 };
