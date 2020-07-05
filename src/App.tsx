@@ -2,17 +2,16 @@ import React from 'react';
 
 import './App.css';
 
-import Contacts from './components/Contacts';
 import Header from './components/Header';
+import Contacts from './components/Contacts';
 
-const App = () => {
-
+const App = (): JSX.Element => {
   return (
     <div className="App">
-      <Header />
+      <Header brand="Contact Manager" />
       <Contacts />
     </div>
   );
-}
+};
 
 export default App;

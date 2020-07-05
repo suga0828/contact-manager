@@ -31,6 +31,10 @@ module.exports = {
     'no-nested-ternary': 0,
     'no-console': 0,
     'no-case-declarations': 0,
-    'import/prefer-default-export': 0
+    'import/prefer-default-export': 0.,
+    'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
+    "import/extensions": { tsx: 'never' },
+    'comma-dangle': ["error", "never"],
+    'arrow-parens': ["error", "as-needed"]
   }
 };
