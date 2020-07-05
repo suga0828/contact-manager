@@ -27,7 +27,7 @@ const mockedContacts: Contact[] = [
     name: 'Henry Johnson',
     email: 'jdow@mail.com',
     phone: '555-555-5555'
-  },
+  }
 ];
 
 const Contacts = (): JSX.Element => {
@@ -41,7 +41,9 @@ const Contacts = (): JSX.Element => {
 
   return (
     <div className="w-11/12 sm:w-3/4 max-w-screen-lg mx-auto my-10">
-      { contacts.map((contact: Contact) => <Contact key={contact.id} info={contact} deleteHandler={() => deleteContact(contact.id)} />) }
+      { contacts.map((contact: Contact) => (
+        <Contact key={contact.id} info={contact} deleteHandler={() => deleteContact(contact.id)} />
+      )) }
     </div>
   );
 };

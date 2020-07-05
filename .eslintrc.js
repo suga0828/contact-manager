@@ -31,10 +31,12 @@ module.exports = {
     'no-nested-ternary': 0,
     'no-console': 0,
     'no-case-declarations': 0,
-    'import/prefer-default-export': 0.,
+    'import/prefer-default-export': 0,
+    'import/no-unresolved': [2, {commonjs: true, amd: true}],
     'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
-    "import/extensions": { tsx: 'never' },
-    'comma-dangle': ["error", "never"],
-    'arrow-parens': ["error", "as-needed"]
+    'import/extensions': [1, 'always', { tsx: 'never' }],
+    'comma-dangle': ['error', 'never'],
+    'arrow-parens': ['error', 'as-needed'],
+    'object-curly-newline': ['error', { "multiline": true }]
   }
 };

@@ -16,7 +16,8 @@ interface ContactProps {
 }
 
 const Contact = (props: ContactProps): JSX.Element => {
-  const { name, email, phone, last } = props.info;
+  const { info } = props;
+  const { name, email, phone, last } = info;
   const { deleteHandler } = props;
 
   const [showInfo, setShowInfo] = useState(false);
