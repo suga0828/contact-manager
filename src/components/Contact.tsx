@@ -12,19 +12,33 @@ interface ContactInfo {
 
 interface ContactProps {
   info: ContactInfo
+  deleteHandler: Function;
 }
 
 const Contact = (props: ContactProps) => {
   const { name, email, phone, last } = props.info;
+  const { deleteHandler } = props;
 
-  const [open, setOpen] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
+
+  const toggleInfo = () => {
+    setShowInfo(!showInfo);
+  }
 
   return (
-    <article className={`rounded overflow-hidden shadow-lg w-full bg-gray-400 px-6 py-4 ${last ? '' : 'mb-4'}`}>
-      <h1 className="font-bold text-xl mb-2">{ name } <FontAwesomeIcon onClick={() => setOpen(!open)} icon={faSortDown} /></h1>
-      <p className="text-gray-700 text-base">Email: { email }</p>
-      <p className="text-gray-700 text-base">Phone: { phone }</p>
-      {open}
+    <article onKeyPress={toggleInfo} onClick={toggleInfo} className={`w-full px-6 py-4 rounded shadow-lg cursor-pointer bg-gray-400 ${last ? '' : 'mb-4'}`} tabIndex={0}>
+      <h1 className="font-bold text-xl flex items-center justify-between">
+        { name }
+        <FontAwesomeIcon flip={ showInfo ? 'vertical' : 'horizontal'} icon={faSortDown} />
+      </h1>
+      <div className={ (showInfo ? '' : 'hidden') + ' flex items-center justify-between'}>
+        <p className="mt-2 text-gray-700 text-base">
+          Email: { email }
+          <br />
+          Phone: { phone }
+        </p>
+        <button onClick={() => deleteHandler()} className="bg-transparent hover:bg-red-500 text-red-700 font-semibold py-2 px-4 border border-red-500 hover:border-transparent rounded">Delete</button>
+      </div>
     </article>
   )
 }

@@ -11,36 +11,30 @@ const mockedContacts = [
   },
   {
     id: 2,
-    name: "John Doe",
-    email: "jdow@mail.com",
+    name: "Karen Willians",
+    email: "kwill@mail.com",
     phone: '555-555-5555'
   },
   {
     id: 3,
-    name: "John Doe",
+    name: "Henry Johnson",
     email: "jdow@mail.com",
     phone: '555-555-5555'
-  },
-  {
-    id: 4,
-    name: "John Doe",
-    email: "jdow@mail.com",
-    phone: '555-555-5555'
-  },
-  {
-    id: 5,
-    name: "John Doe",
-    email: "jdow@mail.com",
-    phone: '555-555-5555'
-  },
+  }
 ]
 
 function Contacts() {
-  const [contacts] = useState(mockedContacts);
+  const [contacts, setContacts] = useState(mockedContacts);
+
+  const deleteContact = (id: number) => {
+    const newContacts = contacts.filter(contact => contact.id !== id);
+
+    setContacts(newContacts);
+  }
 
   return (
-    <div style={{width: '100%'}}>
-      { contacts.map(contact => <Contact key={contact.id} info={contact} />) }
+    <div className="w-11/12 sm:w-3/4 max-w-screen-lg mx-auto my-10">
+      { contacts.map(contact => <Contact key={contact.id} info={contact}  deleteHandler={() => deleteContact(contact.id)} />) }
     </div>
   )
 }
