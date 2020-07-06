@@ -40,7 +40,17 @@ module.exports = {
     'import/extensions': [1, 'always', { tsx: 'never', ts: 'never' }],
     'comma-dangle': ['error', 'never'],
     'arrow-parens': ['error', 'as-needed'],
-    'object-curly-newline': ['error', { 'multiline': true }]
+    'object-curly-newline': ['error', { 'multiline': true }],
+    'jsx-a11y/label-has-associated-control': [
+      error,
+      {
+        labelComponents: [],
+        labelAttributes: [],
+        controlComponents: [],
+        assert: 'htmlFor',
+        depth: 25
+      }
+    ],
   },
   settings: {
     'import/resolver': {

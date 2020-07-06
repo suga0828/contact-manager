@@ -1,4 +1,4 @@
-export interface ContactInterface {
+export interface ContactInfo {
   id: number;
   name: string;
   email: string;
@@ -9,7 +9,7 @@ export enum ContactActions {
   delete = 'DELETE_CONTACT'
 }
 
-export const mockedContacts: ContactInterface[] = [
+export const mockedContacts: ContactInfo[] = [
   {
     id: 1,
     name: 'John Doe',
@@ -31,9 +31,9 @@ export const mockedContacts: ContactInterface[] = [
 ];
 
 export const reducer = (
-  state: { contacts: ContactInterface[] },
+  state: { contacts: ContactInfo[] },
   action: { type: string, payload: any }
-): { contacts: ContactInterface[] } => {
+): { contacts: ContactInfo[] } => {
   switch (action.type) {
     case ContactActions.delete:
       return {

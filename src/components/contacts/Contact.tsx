@@ -2,23 +2,18 @@ import React, { useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortDown } from '@fortawesome/free-solid-svg-icons';
-
-interface ContactInfo {
-  name: string;
-  email: string;
-  phone: string;
-  last?: boolean;
-}
+import { ContactInfo } from './Contacts.reducer';
 
 interface ContactProps {
   info: ContactInfo;
   deleteHandler: () => void;
+  last: boolean;
 }
 
 const Contact = (props: ContactProps): JSX.Element => {
-  const { info } = props;
-  const { name, email, phone, last } = info;
-  const { deleteHandler } = props;
+  const { info, last, deleteHandler } = props;
+  const { name, email, phone } = info;
+
 
   const [showInfo, setShowInfo] = useState(false);
 
