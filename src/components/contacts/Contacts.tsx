@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 
 import Contact from './Contact';
+import AddContact from './AddContact';
 
 import { mockedContacts, reducer, ContactActions } from './Contacts.reducer';
 
@@ -10,6 +11,7 @@ const Contacts = (): JSX.Element => {
 
   return (
     <div className="w-11/12 sm:w-3/4 max-w-screen-lg mx-auto my-10">
+      <AddContact addHandler={(contact) => dispatch({ type: ContactActions.add, payload: contact })} />
       { contacts.map((contact, i, arr) => (
         <Contact
           key={contact.id}

@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-function AddContact() {
+import { ContactInfo } from './Contacts.reducer';
+
+interface AddContactProps {
+  addHandler: (contact: ContactInfo) => void;
+}
+
+const AddContact = (props: AddContactProps): JSX.Element => {
   const [state, setState] = useState({ name: '', email: '', phone: '' });
   const { name, email, phone } = state;
 
@@ -8,12 +14,13 @@ function AddContact() {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(state)
+    const contact: ContactInfo = state as ContactInfo;
+    props.addHandler(contact);
+    setState({ name: '', email: '', phone: '' });
   }
 
   return (
-    <div className="w-11/12 sm:w-3/4 max-w-screen-lg mx-auto my-10">
-      <form onSubmit={onSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <form onSubmit={onSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
@@ -39,7 +46,7 @@ function AddContact() {
             Email address
           </label>
           <input
-            className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="email"
             name="email"
             type="email"
@@ -57,7 +64,7 @@ function AddContact() {
             Phone number
           </label>
           <input
-            className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="phone"
             type="phone"
             name="phone"
@@ -71,11 +78,10 @@ function AddContact() {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            Sign In
+            Add contact
           </button>
         </div>
       </form>
-    </div>
   );
 }
 

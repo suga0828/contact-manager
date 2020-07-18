@@ -1,11 +1,12 @@
 export interface ContactInfo {
-  id: number;
+  id?: number;
   name: string;
   email: string;
   phone: string;
 }
 
 export enum ContactActions {
+  add = 'ADD_CONTACT',
   delete = 'DELETE_CONTACT'
 }
 
@@ -35,6 +36,11 @@ export const reducer = (
   action: { type: string, payload: any }
 ): { contacts: ContactInfo[] } => {
   switch (action.type) {
+    case ContactActions.add:
+      return {
+        ...state,
+        contacts: [{ ...action.payload, id: state.contacts.length + 1 }, ...state.contacts]
+      };
     case ContactActions.delete:
       return {
         ...state,
