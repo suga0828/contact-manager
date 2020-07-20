@@ -10,16 +10,12 @@ interface ContactProps {
   last: boolean;
 }
 
-const Contact = (props: ContactProps): JSX.Element => {
-  const { info, last, deleteHandler } = props;
+const Contact = ({ info, last, deleteHandler }: ContactProps): JSX.Element => {
   const { name, email, phone } = info;
-
 
   const [showInfo, setShowInfo] = useState(false);
 
-  const toggleInfo = () => {
-    setShowInfo(!showInfo);
-  };
+  const toggleInfo = () => setShowInfo(!showInfo);
 
   return (
     <article onKeyPress={toggleInfo} onClick={toggleInfo} className={`w-full px-6 py-4 rounded shadow-lg cursor-pointer bg-gray-400 ${last ? '' : 'mb-4'}`} tabIndex={0}>
@@ -33,7 +29,7 @@ const Contact = (props: ContactProps): JSX.Element => {
           <br />
           { `Phone: ${phone}` }
         </p>
-        <button onClick={() => deleteHandler()} className="bg-transparent hover:bg-red-500 text-red-700 font-semibold py-2 px-4 border border-red-500 hover:border-transparent rounded" type="button">Delete</button>
+        <button onClick={() => deleteHandler()} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">Delete</button>
       </div>
     </article>
   );

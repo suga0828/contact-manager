@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import TextInputGroup from '../layout/TextInputGroup'
 
@@ -11,6 +12,7 @@ interface AddContactProps {
 const AddContact = (props: AddContactProps): JSX.Element => {
   const [state, setState] = useState({ name: '', email: '', phone: '', errors: { name: '', email: '', phone: '' } });
   const { name, email, phone, errors } = state;
+  const history = useHistory();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -37,22 +39,26 @@ const AddContact = (props: AddContactProps): JSX.Element => {
 
     props.addHandler(contact);
     setState({ name: '', email: '', phone: '', errors: { name: '', email: '', phone: '' } });
+    history.push("/");
   }
 
   return (
-    <form onSubmit={onSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <TextInputGroup label="Name" name="name" value={name} placeholder="Enter name..." onChange={onChange} error={errors.name} />
-      <TextInputGroup label="Email" name="email" value={email} type="email" placeholder="Enter email..." onChange={onChange} error={errors.email} />
-      <TextInputGroup label="Phone" name="phone" value={phone} placeholder="Enter phone..." onChange={onChange} error={errors.phone} />
-      <div className="flex items-center justify-between">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="submit"
-        >
-          Add contact
-        </button>
-      </div>
-    </form>
+    <>
+      <h2 className="font-mono text-5xl mb-6">Add Contact</h2>
+      <form onSubmit={onSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <TextInputGroup label="Name" name="name" value={name} placeholder="Enter name..." onChange={onChange} error={errors.name} />
+        <TextInputGroup label="Email" name="email" value={email} type="email" placeholder="Enter email..." onChange={onChange} error={errors.email} />
+        <TextInputGroup label="Phone" name="phone" value={phone} placeholder="Enter phone..." onChange={onChange} error={errors.phone} />
+        <div className="flex items-center justify-between">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit"
+          >
+            Add contact
+          </button>
+        </div>
+      </form>
+    </>
   );
 }
 
