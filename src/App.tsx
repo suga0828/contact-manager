@@ -18,7 +18,6 @@ const App = (): JSX.Element => {
   const { contacts } = state;
 
   useEffect(() => {
-    console.log('holi');
     (async () => {
       const users = await getUsers();
 

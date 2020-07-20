@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import TextInputGroup from '../layout/TextInputGroup'
 
 import { ContactInfo } from './Contacts.reducer';
+import { addUser } from '../../services/Contacts.service';
 
 interface AddContactProps {
   addHandler: (contact: ContactInfo) => void;
@@ -20,7 +21,6 @@ const AddContact = (props: AddContactProps): JSX.Element => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const contact: ContactInfo = state as ContactInfo;
 
     if (state.name === '') {
       setState({...state, errors: { name: '*Name is required.', email: '', phone: '' }});
@@ -37,9 +37,19 @@ const AddContact = (props: AddContactProps): JSX.Element => {
       return;
     }
 
-    props.addHandler(contact);
-    setState({ name: '', email: '', phone: '', errors: { name: '', email: '', phone: '' } });
-    history.push("/");
+    try {
+      (async () => {
+        const contact = { ...state };
+        delete contact.errors;
+        const response = await addUser(contact as ContactInfo);
+
+        props.addHandler(response);
+        setState({ name: '', email: '', phone: '', errors: { name: '', email: '', phone: '' } });
+        history.push("/");
+      })();
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
