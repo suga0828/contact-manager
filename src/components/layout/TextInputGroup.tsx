@@ -10,7 +10,7 @@ interface TextInputGroupProps {
  error?: string;
 }
 
-const TextInputGroup = ({label, name, value, type = 'text', placeholder, onChange, error }: TextInputGroupProps) => {
+const TextInputGroup = ({label, name, value, type = 'text', placeholder, onChange, error }: TextInputGroupProps): JSX.Element => {
   return (
     <div className="mb-4">
       <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={name}>{label}</label>

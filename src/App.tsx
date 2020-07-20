@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -9,11 +9,22 @@ import AddContact from './components/contacts/AddContact';
 import About from './components/pages/About';
 import NotFound from './components/pages/NotFound';
 
-import { mockedContacts, reducer, ContactInfo, ContactActions } from './components/contacts/Contacts.reducer';
+import { reducer, ContactInfo, ContactActions } from './components/contacts/Contacts.reducer';
+
+import { getUsers } from './services/Contacts.service';
 
 const App = (): JSX.Element => {
-  const [state, dispatch] = useReducer(reducer, { contacts: mockedContacts });
+  const [state, dispatch] = useReducer(reducer, { contacts: [] });
   const { contacts } = state;
+
+  useEffect(() => {
+    console.log('holi');
+    (async () => {
+      const users = await getUsers();
+
+      dispatch({ type: ContactActions.fill, payload: users });
+    })();
+  }, []);
 
   return (
     <Router>
