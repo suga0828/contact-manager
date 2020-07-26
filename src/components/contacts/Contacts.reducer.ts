@@ -7,6 +7,7 @@ export interface ContactInfo {
 
 export enum ContactActions {
   add = 'ADD_CONTACT',
+  edit = 'EDIT_CONTACT',
   delete = 'DELETE_CONTACT',
   fill = 'FILL_CONTACTS'
 }
@@ -21,6 +22,13 @@ export const reducer = (
         ...state,
         contacts: [{ ...action.payload, id: state.contacts.length + 1 }, ...state.contacts]
       };
+    case ContactActions.edit:
+      return {
+        ...state,
+        contacts: state.contacts.map(
+          contact => contact.id === action.payload.id ? (contact = action.payload) : contact
+        )
+      }
     case ContactActions.delete:
       return {
         ...state,

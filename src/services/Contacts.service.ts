@@ -8,6 +8,12 @@ export const getUsers = async (): Promise<ContactInfo[]> => {
   return await response.json();
 }
 
+export const getUser = async (id: string): Promise<ContactInfo> => {
+  const response = await fetch(`${BASE_API_URL}/${id}`);
+
+  return await response.json();
+}
+
 export const addUser = async (contact: ContactInfo): Promise<ContactInfo> => {
   const init: RequestInit = {
     method: 'POST',
@@ -18,6 +24,20 @@ export const addUser = async (contact: ContactInfo): Promise<ContactInfo> => {
     body: JSON.stringify(contact)
   }
   const response = await fetch(BASE_API_URL, init);
+
+  return await response.json();
+}
+
+export const editUser = async (contact: ContactInfo, id: string): Promise<ContactInfo> => {
+  const init: RequestInit = {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(contact)
+  }
+  const response = await fetch(`${BASE_API_URL}/${id}`, init);
 
   return await response.json();
 }

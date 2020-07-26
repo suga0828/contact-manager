@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortDown } from '@fortawesome/free-solid-svg-icons';
 import { ContactInfo } from './Contacts.reducer';
 
+import { Link } from 'react-router-dom';
+
 import { deleteUser } from '../../services/Contacts.service';
 
 interface ContactProps {
@@ -13,7 +15,7 @@ interface ContactProps {
 }
 
 const Contact = ({ info, last, deleteHandler }: ContactProps): JSX.Element => {
-  const { name, email, phone } = info;
+  const { id, name, email, phone } = info;
 
   const [showInfo, setShowInfo] = useState(false);
 
@@ -43,6 +45,7 @@ const Contact = ({ info, last, deleteHandler }: ContactProps): JSX.Element => {
           { `Phone: ${phone}` }
         </p>
         <button onClick={onClick} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">Delete</button>
+        <Link to={`contact/edit/${id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Edit</Link>
       </div>
     </article>
   );
