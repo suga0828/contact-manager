@@ -24,7 +24,7 @@ const App = (): JSX.Element => {
 
       dispatch({ type: ContactActions.fill, payload: users });
     })();
-  });
+  }, []);
 
   return (
     <Router>

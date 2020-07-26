@@ -29,7 +29,7 @@ const EditContact = (props: EditContactProps): JSX.Element => {
     } else {
       history.push("/");
     }
-  });
+  }, [id, history]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [e.target.name]: e.target.value });
