@@ -6,9 +6,7 @@ import TextInputGroup from '../layout/TextInputGroup';
 import { ContactInfo } from '../../reducers/contactReducer';
 import { addUser } from '../../services/Contacts.service';
 
-interface AddContactProps {
-  addHandler: (contact: ContactInfo) => void;
-}
+interface AddContactProps {}
 
 const AddContact = (props: AddContactProps): JSX.Element => {
   const [state, setState] = useState({ name: '', email: '', phone: '', errors: { name: '', email: '', phone: '' } });
@@ -43,7 +41,6 @@ const AddContact = (props: AddContactProps): JSX.Element => {
         delete contact.errors;
         const response = await addUser(contact as ContactInfo);
 
-        props.addHandler(response);
         setState({ name: '', email: '', phone: '', errors: { name: '', email: '', phone: '' } });
         history.push('/');
       })();

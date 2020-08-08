@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React from 'react';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -10,48 +10,35 @@ import EditContact from './components/contacts/EditContact';
 import About from './components/pages/About';
 import NotFound from './components/pages/NotFound';
 
-import { reducer, ContactInfo, ContactActions } from './components/contacts/Contacts.reducer';
-
-import { getUsers } from './services/Contacts.service';
+import { Provider } from 'react-redux';
+import store from './store';
 
 const App = (): JSX.Element => {
-  const [state, dispatch] = useReducer(reducer, { contacts: [] });
-  const { contacts } = state;
-
-  useEffect(() => {
-    (async () => {
-      const users = await getUsers();
-
-      dispatch({ type: ContactActions.fill, payload: users });
-    })();
-  }, []);
-
   return (
-    <Router>
-      <Header brand="Contact Manager" />
-      <div className="w-11/12 sm:w-3/4 max-w-screen-lg mx-auto my-10">
-        <Switch>
-          <Route exact path="/">
-            <Contacts
-              data={contacts}
-              deleteHandler={(id: number) => dispatch({ type: ContactActions.delete, payload: id })}
-            />
-          </Route>
-          <Route exact path="/about"><About /></Route>
-          <Route exact path="/contact/add">
-            <AddContact
-              addHandler={(contact: ContactInfo) => dispatch({ type: ContactActions.add, payload: contact })}
-            />
-          </Route>
-          <Route exact path="/contact/edit/:id">
-            <EditContact
-               editHandler={(contact: ContactInfo) => dispatch({ type: ContactActions.edit, payload: contact })}
-            />
-          </Route>
-          <Route><NotFound /></Route>
-        </Switch>
-      </div>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <Header brand="Contact Manager" />
+        <div className="w-11/12 sm:w-3/4 max-w-screen-lg mx-auto my-10">
+          <Switch>
+            <Route exact path="/">
+              <Contacts />
+            </Route>
+            <Route exact path="/about">
+              <About />
+            </Route>
+            <Route exact path="/contact/add">
+              <AddContact />
+            </Route>
+            <Route exact path="/contact/edit/:id">
+              <EditContact />
+            </Route>
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
+    </Provider>
   );
 };
 

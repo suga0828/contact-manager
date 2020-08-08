@@ -25,3 +25,6 @@ yarn-error.log*
 # dependenies tree
 package-lock.json
 yarn.lock
+
+# assets
+src/assets

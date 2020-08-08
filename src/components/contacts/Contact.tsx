@@ -10,11 +10,10 @@ import { deleteUser } from '../../services/Contacts.service';
 
 interface ContactProps {
   info: ContactInfo;
-  deleteHandler: () => void;
   last: boolean;
 }
 
-const Contact = ({ info, last, deleteHandler }: ContactProps): JSX.Element => {
+const Contact = ({ info, last }: ContactProps): JSX.Element => {
   const { id, name, email, phone } = info;
 
   const [showInfo, setShowInfo] = useState(false);
@@ -26,7 +25,6 @@ const Contact = ({ info, last, deleteHandler }: ContactProps): JSX.Element => {
 
     try {
       await deleteUser(info.id as number);
-      deleteHandler();
     } catch (error) {
       console.error(error);
     }

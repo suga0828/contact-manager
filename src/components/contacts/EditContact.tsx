@@ -8,9 +8,7 @@ import { ContactInfo } from '../../reducers/contactReducer';
 
 type EditContactParams = { id: string };
 
-interface EditContactProps extends RouteComponentProps<EditContactParams> {
-  editHandler: (contact: ContactInfo) => void;
-}
+interface EditContactProps extends RouteComponentProps<EditContactParams> {}
 
 const EditContact = (props: EditContactProps): JSX.Element => {
   const { id } = props?.match?.params;
@@ -59,8 +57,6 @@ const EditContact = (props: EditContactProps): JSX.Element => {
         delete updateContact.errors;
 
         const usedUpdated = await editUser(updateContact as ContactInfo, id);
-
-        props.editHandler(usedUpdated);
 
         history.push('/');
       })();
