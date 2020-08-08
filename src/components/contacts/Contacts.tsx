@@ -2,19 +2,18 @@ import React, { useEffect } from 'react';
 
 import Contact from './Contact';
 
-import { ContactInfo, ContactActions } from '../../reducers/contactReducer';
 import { AppState } from '../../reducers';
+import { getContactsAction } from '../../actions/contactActions';
+import { connect, ConnectedProps } from 'react-redux';
 
-import { connect } from 'react-redux';
+type ContactsProps = ConnectedProps<typeof connector>;
 
-interface ContactsProps {
-  contacts: ContactInfo[];
-  getContacts: () => void;
-}
-
-const Contacts = ({ contacts, getContacts }: ContactsProps): JSX.Element => {
+const Contacts = ({
+  contacts,
+  getContactsAction
+}: ContactsProps): JSX.Element => {
   useEffect(() => {
-    getContacts();
+    getContactsAction();
   });
 
   return (
@@ -29,11 +28,11 @@ const Contacts = ({ contacts, getContacts }: ContactsProps): JSX.Element => {
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
-  contacts: state.contacts.contacts
-});
-const mapDispatchToProps = (dispatch: any) => ({
-  getContacts: () => dispatch({ type: ContactActions.get })
-});
+const connector = connect(
+  (state: AppState) => ({
+    contacts: state.contacts.contacts
+  }),
+  { getContactsAction }
+);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Contacts);
+export default connector(Contacts);
