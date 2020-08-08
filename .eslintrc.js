@@ -3,12 +3,7 @@ module.exports = {
     browser: true,
     es6: true
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'airbnb'
-  ],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'plugin:react/recommended', 'airbnb'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
@@ -21,11 +16,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module'
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-    'import'
-  ],
+  plugins: ['react', '@typescript-eslint', 'import'],
   rules: {
     'no-underscore-dangle': 0,
     'arrow-body-style': 0,
@@ -40,7 +31,7 @@ module.exports = {
     'import/extensions': [1, 'always', { tsx: 'never', ts: 'never' }],
     'comma-dangle': ['error', 'never'],
     'arrow-parens': ['error', 'as-needed'],
-    'object-curly-newline': ['error', { 'multiline': true }],
+    'object-curly-newline': ['error', { multiline: true }],
     'jsx-a11y/label-has-associated-control': [
       error,
       {
@@ -50,7 +41,7 @@ module.exports = {
         assert: 'htmlFor',
         depth: 25
       }
-    ],
+    ]
   },
   settings: {
     'import/resolver': {

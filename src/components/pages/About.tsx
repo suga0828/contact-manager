@@ -7,7 +7,7 @@ const About = (): JSX.Element => {
       <p>Simple app to manage contacts.</p>
       <small className="text-teal-600">Versión 1.0.0</small>
     </>
-  )
-}
+  );
+};
 
 export default About;
