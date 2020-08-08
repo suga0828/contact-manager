@@ -28,7 +28,10 @@ export const addUser = async (contact: ContactInfo): Promise<ContactInfo> => {
   return await response.json();
 };
 
-export const editUser = async (contact: ContactInfo, id: string): Promise<ContactInfo> => {
+export const editUser = async (
+  contact: ContactInfo,
+  id: string
+): Promise<ContactInfo> => {
   const init: RequestInit = {
     method: 'PUT',
     headers: {

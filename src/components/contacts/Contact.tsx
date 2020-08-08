@@ -34,14 +34,23 @@ const Contact = ({ info, last }: ContactProps): JSX.Element => {
     <article
       onKeyPress={toggleInfo}
       onClick={toggleInfo}
-      className={`w-full px-6 py-4 rounded shadow-lg cursor-pointer bg-gray-400 ${last ? '' : 'mb-4'}`}
+      className={`w-full px-6 py-4 rounded shadow-lg cursor-pointer bg-gray-400 ${
+        last ? '' : 'mb-4'
+      }`}
       tabIndex={0}
     >
       <h1 className="font-bold text-xl flex items-center justify-between">
         {name}
-        <FontAwesomeIcon flip={showInfo ? 'vertical' : 'horizontal'} icon={faSortDown} />
+        <FontAwesomeIcon
+          flip={showInfo ? 'vertical' : 'horizontal'}
+          icon={faSortDown}
+        />
       </h1>
-      <div className={`${showInfo ? '' : 'hidden'} flex items-center justify-between`}>
+      <div
+        className={`${
+          showInfo ? '' : 'hidden'
+        } flex items-center justify-between`}
+      >
         <p className="mt-2 text-gray-700 text-base">
           {`Email: ${email}`}
           <br />

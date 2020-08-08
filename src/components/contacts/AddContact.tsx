@@ -9,7 +9,12 @@ import { addUser } from '../../services/Contacts.service';
 interface AddContactProps {}
 
 const AddContact = (props: AddContactProps): JSX.Element => {
-  const [state, setState] = useState({ name: '', email: '', phone: '', errors: { name: '', email: '', phone: '' } });
+  const [state, setState] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    errors: { name: '', email: '', phone: '' }
+  });
   const { name, email, phone, errors } = state;
   const history = useHistory();
 
@@ -21,17 +26,26 @@ const AddContact = (props: AddContactProps): JSX.Element => {
     e.preventDefault();
 
     if (state.name === '') {
-      setState({ ...state, errors: { name: '*Name is required.', email: '', phone: '' } });
+      setState({
+        ...state,
+        errors: { name: '*Name is required.', email: '', phone: '' }
+      });
       return;
     }
 
     if (state.email === '') {
-      setState({ ...state, errors: { name: '', email: '*Email is required.', phone: '' } });
+      setState({
+        ...state,
+        errors: { name: '', email: '*Email is required.', phone: '' }
+      });
       return;
     }
 
     if (state.phone === '') {
-      setState({ ...state, errors: { name: '', email: '', phone: '*Phone is required.' } });
+      setState({
+        ...state,
+        errors: { name: '', email: '', phone: '*Phone is required.' }
+      });
       return;
     }
 
@@ -41,7 +55,12 @@ const AddContact = (props: AddContactProps): JSX.Element => {
         delete contact.errors;
         const response = await addUser(contact as ContactInfo);
 
-        setState({ name: '', email: '', phone: '', errors: { name: '', email: '', phone: '' } });
+        setState({
+          name: '',
+          email: '',
+          phone: '',
+          errors: { name: '', email: '', phone: '' }
+        });
         history.push('/');
       })();
     } catch (error) {
@@ -52,7 +71,10 @@ const AddContact = (props: AddContactProps): JSX.Element => {
   return (
     <>
       <h2 className="font-mono text-5xl mb-6">Add Contact</h2>
-      <form onSubmit={onSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <form
+        onSubmit={onSubmit}
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      >
         <TextInputGroup
           label="Name"
           name="name"

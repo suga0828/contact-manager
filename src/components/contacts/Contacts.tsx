@@ -29,7 +29,11 @@ const Contacts = ({ contacts, getContacts }: ContactsProps): JSX.Element => {
   );
 };
 
-const mapStateToProps = (state: AppState) => ({ contacts: state.contacts.contacts });
-const mapDispatchToProps = (dispatch: any) => ({ getContacts: () => dispatch({ type: ContactActions.get }) });
+const mapStateToProps = (state: AppState) => ({
+  contacts: state.contacts.contacts
+});
+const mapDispatchToProps = (dispatch: any) => ({
+  getContacts: () => dispatch({ type: ContactActions.get })
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Contacts);
