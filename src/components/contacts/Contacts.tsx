@@ -3,18 +3,15 @@ import React, { useEffect } from 'react';
 import Contact from './Contact';
 
 import { AppState } from '../../reducers';
-import { getContactsAction } from '../../actions/contactActions';
+import { getContacts } from '../../actions/contactActions';
 import { connect, ConnectedProps } from 'react-redux';
 
 type ContactsProps = ConnectedProps<typeof connector>;
 
-const Contacts = ({
-  contacts,
-  getContactsAction
-}: ContactsProps): JSX.Element => {
+const Contacts = ({ contacts, getContacts }: ContactsProps): JSX.Element => {
   useEffect(() => {
-    getContactsAction();
-  });
+    getContacts();
+  }, []);
 
   return (
     <>
@@ -32,7 +29,7 @@ const connector = connect(
   (state: AppState) => ({
     contacts: state.contacts.contacts
   }),
-  { getContactsAction }
+  { getContacts }
 );
 
 export default connector(Contacts);

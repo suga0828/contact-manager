@@ -3,15 +3,21 @@ import { useHistory, RouteComponentProps, withRouter } from 'react-router-dom';
 
 import TextInputGroup from '../layout/TextInputGroup';
 
-import { getUser, editUser } from '../../services/Contacts.service';
-import { ContactInfo } from '../../reducers/contactReducer';
+import { AppState } from '../../reducers';
+import { connect, ConnectedProps } from 'react-redux';
+import { getContact, updateContact } from '../../actions/contactActions';
 
-type EditContactParams = { id: string };
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
-interface EditContactProps extends RouteComponentProps<EditContactParams> {}
+type EditContactProps = PropsFromRedux & RouteComponentProps<{ id: string }>;
 
-const EditContact = (props: EditContactProps): JSX.Element => {
-  const { id } = props?.match?.params;
+const EditContact = ({
+  contact,
+  getContact,
+  updateContact,
+  match: { params }
+}: EditContactProps): JSX.Element => {
+  const { id } = params;
 
   const [state, setState] = useState({
     name: '',
@@ -24,20 +30,22 @@ const EditContact = (props: EditContactProps): JSX.Element => {
 
   useEffect(() => {
     if (Number(id)) {
-      (async () => {
-        const { name, email, phone } = await getUser(id);
-
-        setState({
-          name,
-          email,
-          phone,
-          errors: { name: '', email: '', phone: '' }
-        });
-      })();
+      getContact(id);
     } else {
       history.push('/');
     }
   }, [id, history]);
+
+  useEffect(() => {
+    const { name, email, phone } = contact;
+
+    setState(state => ({
+      name,
+      email,
+      phone,
+      errors: state.errors
+    }));
+  }, [contact]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -72,10 +80,10 @@ const EditContact = (props: EditContactProps): JSX.Element => {
 
     try {
       (async () => {
-        const updateContact = { ...state };
-        delete updateContact.errors;
+        const contact = { ...state, id };
+        delete contact.errors;
 
-        const usedUpdated = await editUser(updateContact as ContactInfo, id);
+        updateContact(contact);
 
         history.push('/');
       })();
@@ -129,4 +137,11 @@ const EditContact = (props: EditContactProps): JSX.Element => {
   );
 };
 
-export default withRouter(EditContact);
+const connector = connect(
+  (state: AppState) => ({
+    contact: state.contacts.contact
+  }),
+  { getContact, updateContact }
+);
+
+export default connector(withRouter(EditContact));

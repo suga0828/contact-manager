@@ -6,14 +6,17 @@ import { ContactInfo } from '../../reducers/contactReducer';
 
 import { Link } from 'react-router-dom';
 
-import { deleteUser } from '../../services/Contacts.service';
+import { connect, ConnectedProps } from 'react-redux';
+import { deleteContact } from '../../actions/contactActions';
 
-interface ContactProps {
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+type ContactProps = PropsFromRedux & {
   info: ContactInfo;
   last: boolean;
-}
+};
 
-const Contact = ({ info, last }: ContactProps): JSX.Element => {
+const Contact = ({ info, last, deleteContact }: ContactProps): JSX.Element => {
   const { id, name, email, phone } = info;
 
   const [showInfo, setShowInfo] = useState(false);
@@ -24,7 +27,7 @@ const Contact = ({ info, last }: ContactProps): JSX.Element => {
     e.stopPropagation();
 
     try {
-      await deleteUser(info.id as number);
+      deleteContact(info.id as number);
     } catch (error) {
       console.error(error);
     }
@@ -74,4 +77,6 @@ const Contact = ({ info, last }: ContactProps): JSX.Element => {
   );
 };
 
-export default Contact;
+const connector = connect(null, { deleteContact });
+
+export default connector(Contact);

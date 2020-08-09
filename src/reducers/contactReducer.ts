@@ -1,5 +1,7 @@
+import { CONTACT_ACTIONS } from '../actions/contactActions';
+
 export interface ContactInfo {
-  id?: number;
+  id?: number | string;
   name: string;
   email: string;
   phone: string;
@@ -7,56 +9,29 @@ export interface ContactInfo {
 
 export interface ContactsState {
   contacts: ContactInfo[];
+  contact: ContactInfo;
 }
 
 const initialState: ContactsState = {
-  contacts: [
-    {
-      id: 1,
-      name: 'John Doe',
-      email: 'jdow@mail.com',
-      phone: '555-555-5555'
-    },
-    {
-      id: 2,
-      name: 'Karen Willians',
-      email: 'kwill@mail.com',
-      phone: '555-555-5555'
-    },
-    {
-      id: 3,
-      name: 'Henry Johnson',
-      email: 'jdow@mail.com',
-      phone: '555-555-5555'
-    }
-  ] as ContactInfo[]
+  contacts: [],
+  contact: {} as ContactInfo
 };
-
-export enum ContactActions {
-  get = 'GET_CONTACTS',
-  add = 'ADD_CONTACT',
-  edit = 'EDIT_CONTACT',
-  delete = 'DELETE_CONTACT'
-}
 
 const reducer = (
   state = initialState,
-  action: { type: ContactActions; payload: any }
+  action: { type: CONTACT_ACTIONS; payload: any }
 ): ContactsState => {
   switch (action.type) {
-    case ContactActions.get:
-      return {
-        ...state
-      };
-    case ContactActions.add:
+    case CONTACT_ACTIONS.GET_CONTACTS:
+      return { ...state, contacts: action.payload };
+    case CONTACT_ACTIONS.GET:
+      return { ...state, contact: action.payload };
+    case CONTACT_ACTIONS.ADD:
       return {
         ...state,
-        contacts: [
-          ...state.contacts,
-          { ...action.payload, id: state.contacts.length + 1 }
-        ]
+        contacts: [...state.contacts, { ...action.payload }]
       };
-    case ContactActions.edit:
+    case CONTACT_ACTIONS.UPDATE:
       return {
         ...state,
         contacts: state.contacts.map(contact =>
@@ -65,7 +40,7 @@ const reducer = (
             : contact
         )
       };
-    case ContactActions.delete:
+    case CONTACT_ACTIONS.DELETE:
       return {
         ...state,
         contacts: state.contacts.filter(con => con.id !== action.payload)

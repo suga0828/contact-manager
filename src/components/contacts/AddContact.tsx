@@ -4,17 +4,20 @@ import { useHistory } from 'react-router-dom';
 import TextInputGroup from '../layout/TextInputGroup';
 
 import { ContactInfo } from '../../reducers/contactReducer';
-import { addUser } from '../../services/Contacts.service';
+import { connect, ConnectedProps } from 'react-redux';
+import { addContact } from '../../actions/contactActions';
 
-interface AddContactProps {}
+type AddContactProps = ConnectedProps<typeof connector>;
 
-const AddContact = (props: AddContactProps): JSX.Element => {
-  const [state, setState] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    errors: { name: '', email: '', phone: '' }
-  });
+const emptyState = {
+  name: '',
+  email: '',
+  phone: '',
+  errors: { name: '', email: '', phone: '' }
+};
+
+const AddContact = ({ addContact }: AddContactProps): JSX.Element => {
+  const [state, setState] = useState(emptyState);
   const { name, email, phone, errors } = state;
   const history = useHistory();
 
@@ -28,7 +31,7 @@ const AddContact = (props: AddContactProps): JSX.Element => {
     if (state.name === '') {
       setState({
         ...state,
-        errors: { name: '*Name is required.', email: '', phone: '' }
+        errors: { ...emptyState.errors, name: '*Name is required.' }
       });
       return;
     }
@@ -36,7 +39,7 @@ const AddContact = (props: AddContactProps): JSX.Element => {
     if (state.email === '') {
       setState({
         ...state,
-        errors: { name: '', email: '*Email is required.', phone: '' }
+        errors: { ...emptyState.errors, email: '*Email is required.' }
       });
       return;
     }
@@ -44,7 +47,7 @@ const AddContact = (props: AddContactProps): JSX.Element => {
     if (state.phone === '') {
       setState({
         ...state,
-        errors: { name: '', email: '', phone: '*Phone is required.' }
+        errors: { ...emptyState.errors, phone: '*Phone is required.' }
       });
       return;
     }
@@ -53,14 +56,10 @@ const AddContact = (props: AddContactProps): JSX.Element => {
       (async () => {
         const contact = { ...state };
         delete contact.errors;
-        const response = await addUser(contact as ContactInfo);
 
-        setState({
-          name: '',
-          email: '',
-          phone: '',
-          errors: { name: '', email: '', phone: '' }
-        });
+        addContact(contact as ContactInfo);
+
+        setState(emptyState);
         history.push('/');
       })();
     } catch (error) {
@@ -113,4 +112,6 @@ const AddContact = (props: AddContactProps): JSX.Element => {
   );
 };
 
-export default AddContact;
+const connector = connect(null, { addContact });
+
+export default connector(AddContact);
