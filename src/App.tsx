@@ -10,7 +10,7 @@ const App = (): JSX.Element => {
   return (
     <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
-      <Dashboard />
+        <Dashboard />
       </ReactReduxFirebaseProvider>
     </Provider>
   );

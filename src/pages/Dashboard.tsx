@@ -5,8 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Header from '../components/layout/Header';
 
 import Contacts from '../components/contacts/Contacts';
-import AddContact from '../components/contacts/AddContact';
-import EditContact from '../components/contacts/EditContact';
+import ManageContact from '../components/contacts/ManageContact';
 import About from '../components/pages/About';
 import NotFound from '../components/pages/NotFound';
 
@@ -22,11 +21,8 @@ const Dashboard = (): JSX.Element => {
           <Route exact path="/about">
             <About />
           </Route>
-          <Route exact path="/contact/add">
-            <AddContact />
-          </Route>
-          <Route exact path="/contact/edit/:id">
-            <EditContact />
+          <Route exact path="/contact/:id?">
+            <ManageContact />
           </Route>
           <Route>
             <NotFound />

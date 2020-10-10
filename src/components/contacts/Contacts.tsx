@@ -1,17 +1,25 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Contact from './Contact';
 
 import { AppState } from '../../store';
-import { getContacts } from '../../store/actions/contactActions';
-import { connect, ConnectedProps } from 'react-redux';
 
-type ContactsProps = ConnectedProps<typeof connector>;
+import { useSelector } from 'react-redux'
+import { isLoaded, isEmpty, useFirestoreConnect } from 'react-redux-firebase'
+import { ContactInfo } from '../../store/reducers/contactReducer';
 
-const Contacts = ({ contacts, getContacts }: ContactsProps): JSX.Element => {
-  useEffect(() => {
-    getContacts();
-  }, []);
+const Contacts = (): JSX.Element => {
+  useFirestoreConnect([{ collection: 'contacts' }])
+
+  const contacts: ContactInfo[] = useSelector((state: AppState) =>  state.firestore.ordered.contacts)
+
+  if (!isLoaded(contacts)) {
+    return <div>Loading...</div>
+  }
+
+  if (isEmpty(contacts)) {
+    return <div>Todos List Is Empty</div>
+  }
 
   return (
     <>
@@ -25,11 +33,4 @@ const Contacts = ({ contacts, getContacts }: ContactsProps): JSX.Element => {
   );
 };
 
-const connector = connect(
-  (state: AppState) => ({
-    contacts: state.contacts.contacts
-  }),
-  { getContacts }
-);
-
-export default connector(Contacts);
+export default Contacts

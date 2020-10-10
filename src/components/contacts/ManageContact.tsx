@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, RouteComponentProps, withRouter, Link } from 'react-router-dom';
 
 import TextInputGroup from '../layout/TextInputGroup';
 
+import { useFirestore } from 'react-redux-firebase'
 import { ContactInfo } from '../../store/reducers/contactReducer';
-import { connect, ConnectedProps } from 'react-redux';
-import { addContact } from '../../store/actions/contactActions';
 
-type AddContactProps = ConnectedProps<typeof connector>;
+type EditContactProps = RouteComponentProps<{ id: string }>;
 
-const emptyState = {
-  name: '',
-  email: '',
-  phone: '',
-  errors: { name: '', email: '', phone: '' }
-};
+const ManageContact = ({ match: { params } }: EditContactProps): JSX.Element => {
+  const { id } = params;
 
-const AddContact = ({ addContact }: AddContactProps): JSX.Element => {
-  const [state, setState] = useState(emptyState);
-  const { name, email, phone, errors } = state;
   const history = useHistory();
+  const firestore = useFirestore()
+
+  const [state, setState] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    errors: { name: '', email: '', phone: '' }
+  });
+  const { name, email, phone, errors } = state;
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -31,7 +32,7 @@ const AddContact = ({ addContact }: AddContactProps): JSX.Element => {
     if (state.name === '') {
       setState({
         ...state,
-        errors: { ...emptyState.errors, name: '*Name is required.' }
+        errors: { name: '*Name is required.', email: '', phone: '' }
       });
       return;
     }
@@ -39,7 +40,7 @@ const AddContact = ({ addContact }: AddContactProps): JSX.Element => {
     if (state.email === '') {
       setState({
         ...state,
-        errors: { ...emptyState.errors, email: '*Email is required.' }
+        errors: { name: '', email: '*Email is required.', phone: '' }
       });
       return;
     }
@@ -47,19 +48,21 @@ const AddContact = ({ addContact }: AddContactProps): JSX.Element => {
     if (state.phone === '') {
       setState({
         ...state,
-        errors: { ...emptyState.errors, phone: '*Phone is required.' }
+        errors: { name: '', email: '', phone: '*Phone is required.' }
       });
       return;
     }
 
     try {
       (async () => {
+        delete (state as any)?.errors
         const contact = { ...state };
-        delete contact.errors;
+        if (id) {
+          firestore.collection('contacts').doc(id).update(contact);
+        } else {
+          firestore.collection('contacts').add(contact);
+        }
 
-        addContact(contact as ContactInfo);
-
-        setState(emptyState);
         history.push('/');
       })();
     } catch (error) {
@@ -69,7 +72,15 @@ const AddContact = ({ addContact }: AddContactProps): JSX.Element => {
 
   return (
     <>
-      <h2 className="font-mono text-5xl mb-6">Add Contact</h2>
+      <h2 className="font-mono text-5xl mb-6 flex justify-between items-center">
+       { (id ? 'Edit' : 'Add') + ' Contact'}
+        <Link
+          to="/"
+          className="text-sm bg-gray-500 hover:bg-gray-700 text-white p-2 rounded focus:outline-none focus:shadow-outline"
+          >
+            Back
+        </Link>
+      </h2>
       <form
         onSubmit={onSubmit}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
@@ -104,7 +115,7 @@ const AddContact = ({ addContact }: AddContactProps): JSX.Element => {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            Add contact
+            { (id ? 'Edit' : 'Add') + ' contact'}
           </button>
         </div>
       </form>
@@ -112,6 +123,4 @@ const AddContact = ({ addContact }: AddContactProps): JSX.Element => {
   );
 };
 
-const connector = connect(null, { addContact });
-
-export default connector(AddContact);
+export default withRouter(ManageContact);

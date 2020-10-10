@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFirebase } from 'react-redux-firebase';
 
 import { Link } from 'react-router-dom';
 
@@ -8,6 +9,7 @@ interface HeaderProps {
 
 const Header = ({ brand }: HeaderProps): JSX.Element => {
   const [opened, setOpened] = useState(false);
+  const auth = useFirebase().auth();
 
   useEffect(() => {
     if (opened) {
@@ -22,6 +24,8 @@ const Header = ({ brand }: HeaderProps): JSX.Element => {
       return () => document.removeEventListener('keydown', mobileMenuHandler);
     }
   }, [opened]);
+
+  const logOut = () => auth.signOut();
 
   return (
     <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
@@ -76,11 +80,19 @@ const Header = ({ brand }: HeaderProps): JSX.Element => {
         </li>
         <li className="px-4 py-2">
           <Link
-            to="/contact/add"
+            to="/contact"
             className="text-sm leading-none text-teal-200 border-white hover:text-white mt-4 lg:mt-0"
           >
             Add contact
           </Link>
+        </li>
+        <li className="px-4 py-2">
+          <button
+            className="text-sm leading-none text-teal-200 border-white hover:text-white mt-4 lg:mt-0"
+            onClick={logOut}
+          >
+            Logout
+          </button>
         </li>
       </ul>
     </nav>
