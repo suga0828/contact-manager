@@ -3,9 +3,9 @@ import { useHistory } from 'react-router-dom';
 
 import TextInputGroup from '../layout/TextInputGroup';
 
-import { ContactInfo } from '../../reducers/contactReducer';
+import { ContactInfo } from '../../store/reducers/contactReducer';
 import { connect, ConnectedProps } from 'react-redux';
-import { addContact } from '../../actions/contactActions';
+import { addContact } from '../../store/actions/contactActions';
 
 type AddContactProps = ConnectedProps<typeof connector>;
 

@@ -6,7 +6,7 @@ import {
   addUser,
   getUser,
   updateUser
-} from '../services/Contacts.service';
+} from '../../services/Contacts.service';
 
 export enum CONTACT_ACTIONS {
   GET_CONTACTS = 'GET_CONTACTS',

@@ -2,12 +2,12 @@ import React, { useState, MouseEvent } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortDown } from '@fortawesome/free-solid-svg-icons';
-import { ContactInfo } from '../../reducers/contactReducer';
+import { ContactInfo } from '../../store/reducers/contactReducer';
 
 import { Link } from 'react-router-dom';
 
 import { connect, ConnectedProps } from 'react-redux';
-import { deleteContact } from '../../actions/contactActions';
+import { deleteContact } from '../../store/actions/contactActions';
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 

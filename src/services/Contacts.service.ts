@@ -1,4 +1,4 @@
-import { ContactInfo } from '../reducers/contactReducer';
+import { ContactInfo } from '../store/reducers/contactReducer';
 
 const BASE_API_URL = 'https://jsonplaceholder.typicode.com/users';
 

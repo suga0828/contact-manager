@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 
 import Contact from './Contact';
 
-import { AppState } from '../../reducers';
-import { getContacts } from '../../actions/contactActions';
+import { AppState } from '../../store';
+import { getContacts } from '../../store/actions/contactActions';
 import { connect, ConnectedProps } from 'react-redux';
 
 type ContactsProps = ConnectedProps<typeof connector>;
