@@ -1,26 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, RouteComponentProps, withRouter, Link } from 'react-router-dom';
 
 import TextInputGroup from '../layout/TextInputGroup';
 
 import { useFirestore } from 'react-redux-firebase'
 import { ContactInfo } from '../../store/reducers/contactReducer';
+import { CONTACTS_COLLECTION } from '../../firebase/constant';
+
+interface ManageContactState extends ContactInfo {
+  errors?: any
+}
+
+const emptyState: ManageContactState = {
+  name: '',
+  email: '',
+  phone: '',
+  errors: { name: '', email: '', phone: '' }
+}
 
 type EditContactProps = RouteComponentProps<{ id: string }>;
 
 const ManageContact = ({ match: { params } }: EditContactProps): JSX.Element => {
+  const history = useHistory();
+  const firestore = useFirestore();
+
+  const [state, setState] = useState(emptyState);
+  const { name, email, phone, errors } = state;
+
   const { id } = params;
 
-  const history = useHistory();
-  const firestore = useFirestore()
-
-  const [state, setState] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    errors: { name: '', email: '', phone: '' }
-  });
-  const { name, email, phone, errors } = state;
+  useEffect(() => {
+    (async () => {
+      if (id) {
+        const res = (await firestore.collection(CONTACTS_COLLECTION).doc(id).get()).data() as ContactInfo;
+        setState(res);
+      }
+    })()
+  }, [firestore, id]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, [e.target.name]: e.target.value });
@@ -29,51 +45,53 @@ const ManageContact = ({ match: { params } }: EditContactProps): JSX.Element => 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (state.name === '') {
+    if (!state.name) {
       setState({
         ...state,
-        errors: { name: '*Name is required.', email: '', phone: '' }
+        errors: { ...emptyState.errors, name: '*Name is required.'}
       });
       return;
     }
 
-    if (state.email === '') {
+    if (!state.email) {
       setState({
         ...state,
-        errors: { name: '', email: '*Email is required.', phone: '' }
+        errors: { ...emptyState.errors, email: '*Email is required.'}
       });
       return;
     }
 
-    if (state.phone === '') {
+    if (!state.phone) {
       setState({
         ...state,
-        errors: { name: '', email: '', phone: '*Phone is required.' }
+        errors: { ...emptyState.errors, phone: '*Phone is required.'}
       });
       return;
     }
 
-    try {
-      (async () => {
-        delete (state as any)?.errors
+    (async () => {
+      try {
+        delete state.errors;
+
         const contact = { ...state };
+
         if (id) {
-          firestore.collection('contacts').doc(id).update(contact);
+          await firestore.collection(CONTACTS_COLLECTION).doc(id).update(contact);
         } else {
-          firestore.collection('contacts').add(contact);
+          await firestore.collection(CONTACTS_COLLECTION).add(contact);
         }
 
         history.push('/');
-      })();
-    } catch (error) {
-      console.error(error);
-    }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
   };
 
   return (
     <>
       <h2 className="font-mono text-5xl mb-6 flex justify-between items-center">
-       { (id ? 'Edit' : 'Add') + ' Contact'}
+       { `${(id ? 'Edit' : 'Add')} Contact` }
         <Link
           to="/"
           className="text-sm bg-gray-500 hover:bg-gray-700 text-white p-2 rounded focus:outline-none focus:shadow-outline"
@@ -91,7 +109,7 @@ const ManageContact = ({ match: { params } }: EditContactProps): JSX.Element => 
           value={name}
           placeholder="Enter name..."
           onChange={onChange}
-          error={errors.name}
+          error={errors?.name}
         />
         <TextInputGroup
           label="Email"
@@ -100,7 +118,7 @@ const ManageContact = ({ match: { params } }: EditContactProps): JSX.Element => 
           type="email"
           placeholder="Enter email..."
           onChange={onChange}
-          error={errors.email}
+          error={errors?.email}
         />
         <TextInputGroup
           label="Phone"
@@ -108,14 +126,14 @@ const ManageContact = ({ match: { params } }: EditContactProps): JSX.Element => 
           value={phone}
           placeholder="Enter phone..."
           onChange={onChange}
-          error={errors.phone}
+          error={errors?.phone}
         />
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            { (id ? 'Edit' : 'Add') + ' contact'}
+            { `${(id ? 'Edit' : 'Add')} contact`}
           </button>
         </div>
       </form>

@@ -3,13 +3,14 @@ import React from 'react';
 import Contact from './Contact';
 
 import { AppState } from '../../store';
+import { CONTACTS_COLLECTION } from '../../firebase/constant';
 
 import { useSelector } from 'react-redux'
 import { isLoaded, isEmpty, useFirestoreConnect } from 'react-redux-firebase'
 import { ContactInfo } from '../../store/reducers/contactReducer';
 
 const Contacts = (): JSX.Element => {
-  useFirestoreConnect([{ collection: 'contacts' }])
+  useFirestoreConnect([{ collection: CONTACTS_COLLECTION }])
 
   const contacts: ContactInfo[] = useSelector((state: AppState) =>  state.firestore.ordered.contacts)
 
