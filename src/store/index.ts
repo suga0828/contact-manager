@@ -5,10 +5,17 @@ import firebase from 'firebase';
 import 'firebase/auth';
 import 'firebase/firestore';
 
-import { firebaseReducer } from 'react-redux-firebase';
-import { reduxFirestore, firestoreReducer } from 'redux-firestore';
+import { FirebaseReducer, firebaseReducer } from 'react-redux-firebase';
+import {
+  reduxFirestore,
+  firestoreReducer,
+  createFirestoreInstance
+} from 'redux-firestore';
 
-import contactReducer, { ContactsState } from './reducers/contactReducer';
+import contactReducer, {
+  ContactInfo,
+  ContactsState
+} from './reducers/contactReducer';
 
 export const config = {
   apiKey: 'AIzaSyAeZLb9I_46ZwHkUV1zP2XporL1CUdZ1xM',
@@ -17,13 +24,12 @@ export const config = {
   projectId: 'contact-manager-suga0828',
   storageBucket: 'contact-manager-suga0828.appspot.com',
   messagingSenderId: '1052372834397',
-  appId: '1:1052372834397:web:ea80e6aacea9798f4b95b4',
-  measurementId: 'G-RQ1T21QKJ4'
+  appId: '1:1052372834397:web:ea80e6aacea9798f4b95b4'
 };
 
 const rrfConfig = {
   userProfile: 'users',
-  useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
+  useFirestoreForProfile: true
 };
 
 firebase.initializeApp(config);
@@ -34,11 +40,22 @@ const createStoreWithFirebase = compose(
   reduxFirestore(firebase, rrfConfig as any)
 )(createStore);
 
-export interface AppState {
-  contacts: ContactsState;
+interface Profile {
+  name: string;
+  email: string;
 }
 
-const rootReducer = combineReducers({
+interface Schema {
+  contacts: ContactInfo[];
+}
+
+export interface AppState {
+  contacts: ContactsState;
+  firebase: FirebaseReducer.Reducer<Profile, Schema>;
+  firestore: any;
+}
+
+const rootReducer = combineReducers<AppState>({
   contacts: contactReducer,
   firebase: firebaseReducer,
   firestore: firestoreReducer
@@ -61,8 +78,8 @@ const store = createStoreWithFirebase(
 export const rrfProps = {
   firebase,
   config: rrfConfig,
-  dispatch: store.dispatch
-  // createFirestoreInstance // <- needed if using firestore
+  dispatch: store.dispatch,
+  createFirestoreInstance
 };
 
-export default store; // <- needed if using firestore
+export default store;
